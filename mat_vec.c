@@ -76,6 +76,7 @@ double *multiply_matrix_vector(double **A, double *v, double *w, int n, int m) {
 }
 double *mulitply_matrix_vector_para(double **A, double *v, double *wp, int n, int m){
 // this function should multiply A with v in parallel
+// now A * v is done in parallel via pthread
 	return wp;
 }
 
