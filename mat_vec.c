@@ -1,4 +1,3 @@
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -60,20 +59,7 @@ void print_matrix(double** A, int n, int m) {
 	printf("\n\n");
 }
 
-double *multiply_matrix_vector(double **A, double *v, double *w, int n, int m) {
-	int i, k;
 
-	for (i=0;i<n;i++) 
-		w[i] = 0.0;
-
-	for (i=0;i<n;i++) {
-		for(k=0;k<m;k++) {
-			w[i] += A[i][k] * v[k];
-		}
-	}
-
-	return w;
-}
 double *make_vector(int n) {
 	return (double*) malloc(n * sizeof(double));
 }
@@ -104,20 +90,35 @@ double norm(double *v, double *w, int n){
 	sum = sqrt(sum);
 	return sum;
 }
+double *multiply_matrix_vector(double **A, double *v, double *w, int n, int m) {
+	int i, k;
+
+	for (i=0;i<n;i++) 
+		w[i] = 0.0;
+
+	for (i=0;i<n;i++) {
+		for(k=0;k<m;k++) {
+			w[i] += A[i][k] * v[k];
+		}
+	}
+
+	return w;
+}
 int main(int argc, char** argv) {
 	int n, m;
-	double **A, *v, *w, no;
+	double **A, *v, *ws, *wp, no;
 
 	n = 5;
 	m= 5;
 
 	A=make_matrix(n, m);
 	v=make_vector(n);
-	w=make_vector(n);
+	ws=make_vector(n);
+	wp=make_vector(n);
 	A=fill_random_matrix(A, n, m);
 	v=fill_random_vector(v, n);
-	w=multiply_matrix_vector(A, v, w, n, m);
-	no = norm(v,v,n);
+	ws=multiply_matrix_vector(A, v, w, n, m);
+	no = norm(ws,wp,n);
 	printf("norm=%f\n",no);
 	print_vector(v,n);
 	print_matrix(A, n, m);
